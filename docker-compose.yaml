@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./task-management/task-management
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/taskmanagement
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  frontend:
+    build:
+      context: ./task-management-frontend
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tasks_db
+    ports:
+      - "5433:5432"
